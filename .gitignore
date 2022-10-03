@@ -17,4 +17,7 @@
 # modd config - dinamic reload
 modd.conf
 
+# executable file
+sharemoment
+
 tmp/*
