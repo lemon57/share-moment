@@ -8,8 +8,8 @@ import (
 	"net/http"
 )
 
-func ParseFS(fs fs.FS, filepath string) (Template, error) {
-	htmlTpl, err := template.ParseFS(fs, filepath)
+func ParseFS(fs fs.FS, pattern ...string) (Template, error) {
+	htmlTpl, err := template.ParseFS(fs, pattern...)
 	if err != nil {
 		return Template{}, fmt.Errorf("parsing template: %w", err)
 	}
