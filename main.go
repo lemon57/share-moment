@@ -14,13 +14,13 @@ func main() {
 	r := chi.NewRouter()
 
 	r.Get("/", controllers.StaticHandler(
-		views.Must(views.ParseFS(templates.FS, "layout-page.gohtml", "home.gohtml"))))
+		views.Must(views.ParseFS(templates.FS, "tailwind.gohtml", "home.gohtml"))))
 
 	r.Get("/contact", controllers.StaticHandler(
-		views.Must(views.ParseFS(templates.FS, "layout-page.gohtml", "contact.gohtml"))))
+		views.Must(views.ParseFS(templates.FS, "tailwind.gohtml", "contact.gohtml"))))
 
 	r.Get("/faq", controllers.FAQ(
-		views.Must(views.ParseFS(templates.FS, "faq.gohtml"))))
+		views.Must(views.ParseFS(templates.FS, "tailwind.gohtml", "faq.gohtml"))))
 
 	r.NotFound(func(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Page not found", http.StatusNotFound)
