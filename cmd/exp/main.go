@@ -36,11 +36,34 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
+	defer db.Close()
+
 	err = db.Ping()
 	if err != nil {
 		panic(err)
 	}
 	fmt.Println("Connected!")
 
-	defer db.Close()
+	_, err = db.Exec(`
+		CREATE TABLE IF NOT EXISTS users (
+		id SERIAL PRIMARY KEY,
+		name TEXT,
+		email TEXT NOT NULL
+	  );
+	  
+	  CREATE TABLE IF NOT EXISTS orders (
+		id SERIAL PRIMARY KEY,
+		user_id INT NOT NULL,
+		amount INT,
+		description TEXT
+	  );
+	  `)
+
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println("Tables created.")
+
 }
