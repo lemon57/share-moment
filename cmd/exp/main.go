@@ -51,7 +51,7 @@ func main() {
 		name TEXT,
 		email TEXT NOT NULL
 	  );
-	  
+
 	  CREATE TABLE IF NOT EXISTS orders (
 		id SERIAL PRIMARY KEY,
 		user_id INT NOT NULL,
@@ -66,18 +66,30 @@ func main() {
 
 	fmt.Println("Tables created.")
 
-	name := "New"
-	email := "new@test.com"
+	// name := "New"
+	// email := "new@test.com"
 
+	// row := db.QueryRow(`
+	// 	INSERT INTO users(name, email)
+	// 	VALUES($1, $2) RETURNING id;`, name, email)
+
+	// var id int
+	// err = row.Scan(&id)
+	// if err != nil {
+	// 	panic(err)
+	// }
+
+	// fmt.Println("User created. Id =", id)
+
+	id := 1
 	row := db.QueryRow(`
-  		INSERT INTO users(name, email)
-  		VALUES($1, $2) RETURNING id;`, name, email)
-
-	var id int
-	err = row.Scan(&id)
+		SELECT name, email
+		FROM users 
+		WHERE id = $1;`, id)
+	var name, email string
+	err = row.Scan(&name, &email)
 	if err != nil {
 		panic(err)
 	}
-
-	fmt.Println("User created. Id =", id)
+	fmt.Printf("User: name = %s, email = %s", name, email)
 }
