@@ -1,39 +1,16 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
 
-	_ "github.com/jackc/pgx/v4/stdlib"
 	"github.com/lemon57/share-moment/models"
 )
 
-type PostgresConfig struct {
-	Host     string
-	Port     string
-	User     string
-	Password string
-	Database string
-	SSLMode  string
-}
-
-func (cfg PostgresConfig) String() string {
-	return fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
-		cfg.Host, cfg.Port, cfg.User, cfg.Password, cfg.Database, cfg.SSLMode)
-}
-
 func main() {
-	cfg := PostgresConfig{
-		Host:     "localhost",
-		Port:     "5432",
-		User:     "bjj",
-		Password: "sharemoment",
-		Database: "sharemoment",
-		SSLMode:  "disable",
-	}
+	cfg := models.DefaultPostgresConfig()
+	db, err := models.Open(cfg)
 
 	//db, err := sql.Open("pgx", "postgres://bjj:sharemoment@localhost:5432/sharemoment?sslmode=disable")
-	db, err := sql.Open("pgx", cfg.String())
 	if err != nil {
 		panic(err)
 	}
@@ -49,7 +26,7 @@ func main() {
 	us := models.UserService{
 		DB: db,
 	}
-	user, err := us.Create("roman@test.com", "password")
+	user, err := us.Create("roman02@test.com", "password")
 	if err != nil {
 		panic(err)
 	}
