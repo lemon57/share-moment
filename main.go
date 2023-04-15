@@ -6,6 +6,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/lemon57/share-moment/controllers"
+	"github.com/lemon57/share-moment/models"
 	"github.com/lemon57/share-moment/templates"
 	"github.com/lemon57/share-moment/views"
 )
@@ -28,7 +29,21 @@ func main() {
 		"tailwind.gohtml", "navbar.gohtml", "faq.gohtml",
 	))))
 
-	var usersC controllers.Users
+	cfg := models.DefaultPostgresConfig()
+	db, err := models.Open(cfg)
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+
+	userService := models.UserService{
+		DB: db,
+	}
+
+	usersC := controllers.Users{
+		UserService: &userService,
+	}
+
 	usersC.Templates.New = views.Must(views.ParseFS(
 		templates.FS,
 		"tailwind.gohtml", "navbar.gohtml", "signup.gohtml",
