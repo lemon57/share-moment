@@ -7,6 +7,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/gorilla/csrf"
 	"github.com/lemon57/share-moment/controllers"
+	"github.com/lemon57/share-moment/migrations"
 	"github.com/lemon57/share-moment/models"
 	"github.com/lemon57/share-moment/templates"
 	"github.com/lemon57/share-moment/views"
@@ -37,7 +38,7 @@ func main() {
 	}
 	defer db.Close()
 
-	err = models.Migrate(db, "migrations")
+	err = models.MigrateFS(db, migrations.FS, ".")
 	if err != nil {
 		panic(err)
 	}
